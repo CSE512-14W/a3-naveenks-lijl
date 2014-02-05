@@ -8,6 +8,7 @@ a3-naveenks-lijl
 
 ## Project Name
 
+Research Publication Map
 
 ## Running Instructions
 
