@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>D3 Test</title>
+    <script type="text/javascript" src="d3/d3.v3.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="leafletjs/leaflet.css" />
+    <script src="leafletjs/leaflet.js"></script>
+  </head>
+  <body>
+    <select onchange="mag(this.value)">
+      <option value="0">Maximum Magnitue</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+    <select onchange="depth(this.value)">
+      <option value="0">Maximum Depth</option>
+      <option value="20">20</option>
+      <option value="40">40</option>
+      <option value="60">60</option>
+      <option value="80">80</option>
+      <option value="100">100</option>
+      <option value="120">120</option>
+      <option value="140">140</option>
+      <option value="160">160</option>
+      <option value="180">180</option>
+      <option value="200">200</option>
+    </select>
+    <div><button onclick="animate();" id="but_animate">Animation</button></div>
+    <div><button onclick="stop_animate();" id="but_stop_animate">Stop Animation</button></div>
+    <input type="range" id="slider_bar" step="1" min="0" max="8" value="0" onchange="slider(this.value)" />
+    <span id="time">0</span>
+    <div id="map"></div>
+    <script type="text/javascript" src="data.js"></script>
+    <script type="text/javascript" src="mapscript.js"></script>
+  </body>
+</html>
