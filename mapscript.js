@@ -5,11 +5,11 @@ var tile = L.tileLayer('http://{s}.tile.cloudmade.com/b9748534dbd5412f9d99064a89
 });
 var currLayer = L.layerGroup();
 var currIndex = 0;
-var maxIndex = 8;
-var r_factor = 80000;
+var maxIndex = circles.length;
+var r_factor = 90000;
 var animate_events = new Array();
 var MAGMAX = 10;
-var DEPTHMAX = 200;
+var DEPTHMAX = 700;
 var curr_mag = MAGMAX;
 var curr_depth = DEPTHMAX;
 
@@ -23,11 +23,12 @@ function drawCircles(index) {
     currLayer.clearLayers();
     for (var i = 0; i < circles[index].length; i++) {
 	if (circles[index][i].mag <= curr_mag && circles[index][i].depth <= curr_depth) {
-	    var circle = L.circle(circles[index][i].coordinated, circles[index][i].mag * r_factor, {
+	    var circle = L.circle(circles[index][i].coordinates, circles[index][i].mag * r_factor, {
 		color: 'none',
 		fillColor: 'red',
 		fillOpacity: 0.5
 	    });
+	    circle.bindPopup("Circle");
 	    currLayer.addLayer(circle);
 	}
     }
@@ -42,7 +43,7 @@ function update_bar(value) {
 function drawCircles_auto() {
     currLayer.clearLayers();
     circles[currIndex].forEach(function(d) {
-	d.LatLng = new L.LatLng(d.coordinated[0],d.coordinated[1])
+	d.LatLng = new L.LatLng(d.coordinates[0],d.coordinates[1])
     })
 
     var g = svg.append("g");
@@ -55,7 +56,7 @@ function drawCircles_auto() {
 	.attr("cx",function(d) { return map.latLngToLayerPoint(d.LatLng).x})
 	.attr("cy",function(d) { return map.latLngToLayerPoint(d.LatLng).y})
 	.attr("r",function(d) { return d.mag/1*Math.pow(2,map.getZoom())})
-	.transition().duration(2000).attr('r',1).remove();
+	.transition().duration(function(d) { return Math.round(1000*d.mag);}).attr('r',1).remove();
 
     update_bar(currIndex+1);
     currIndex = currIndex + 1;
@@ -73,7 +74,6 @@ function stop_animate() {
     while (animate_events.length > 0) {
 	clearTimeout(animate_events.pop());
     }
-    drawCircles(currIndex-1);
 }
 
 function slider(value) {
