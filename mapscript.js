@@ -30,10 +30,14 @@ function drawCircles(index) {
     currLayer.addTo(map);
 }
 
+function update_bar(value) {
+    document.getElementById("slider_bar").value = value;
+    document.getElementById("number_hour").value = value;
+}
+
 function drawCircles_auto() {
     drawCircles(currIndex);
-    document.getElementById("slider_bar").value = currIndex + 1;
-    document.getElementById("time").innerHTML = currIndex + 1;
+    update_bar(currIndex+1);
     currIndex = currIndex + 1;
 }
 
@@ -52,12 +56,13 @@ function stop_animate() {
 }
 
 function slider(value) {
-    document.getElementById("time").innerHTML=value;
     if (value == 0) {
 	map.removeLayer(currLayer);
     } else {
-	drawCircles(value-1);
+	currIndex = value - 1;
+	drawCircles(currIndex);
     }
+    document.getElementById("number_hour").value = value;
 }
 
 function mag(value) {
@@ -66,6 +71,8 @@ function mag(value) {
     } else {
 	curr_mag = value;
     }
+
+    drawCircles(currIndex);
 }
 
 function depth(value) {
@@ -73,5 +80,18 @@ function depth(value) {
 	curr_depth = DEPTHMAX;
     } else {
 	curr_depth = value;
+    }
+
+    drawCircles(currIndex);
+}
+
+function hour(value) {
+    if (value > 0 && value <= maxIndex) {
+	currIndex = value - 1;
+	drawCircles(currIndex);
+	document.getElementById("slider_bar").value = value;
+    } else {
+	map.removeLayer(currLayer);
+	document.getElementById("slider_bar").value = 0;
     }
 }
