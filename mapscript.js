@@ -8,10 +8,19 @@ var currIndex = 0;
 var maxIndex = circles.length;
 var r_factor = 90000;
 var animate_events = new Array();
-var MAGMAX = 10;
-var DEPTHMAX = 700;
-var curr_mag = MAGMAX;
-var curr_depth = DEPTHMAX;
+var MAGMIN = 0;
+var DEPTHMIN = 0;
+var curr_mag = MAGMIN;
+var curr_depth = DEPTHMIN;
+var curr_day = 0;
+var curr_hour = 0;
+var fps = 5;
+var day_start = 0;
+var hour_start = 0;
+var day_end = 0;
+var hour_end = 0;
+var currIndex_start = 0;
+var currIndex_end = 0;
 
 tile.addTo(map);
 
@@ -19,25 +28,61 @@ map._initPathRoot()
 
 var svg = d3.select("#map").select("svg");
 
-function drawCircles(index) {
-    currLayer.clearLayers();
-    for (var i = 0; i < circles[index].length; i++) {
-	if (circles[index][i].mag <= curr_mag && circles[index][i].depth <= curr_depth) {
-	    var circle = L.circle(circles[index][i].coordinates, circles[index][i].mag * r_factor, {
-		color: 'none',
-		fillColor: 'red',
-		fillOpacity: 0.5
-	    });
-	    circle.bindPopup("Circle");
-	    currLayer.addLayer(circle);
+function start_day(value) {
+    day_start = value;
+}
+
+function start_hour(value) {
+    hour_start = value;
+}
+
+function end_day(value) {
+    day_end = value;
+}
+
+function end_hour(value) {
+    hour_end = value;
+}
+
+function range_drawCircles() {
+    var start = parseInt(day_start * 24) + parseInt(hour_start);
+    var end = parseInt(day_end * 24) + parseInt(hour_end);
+
+    currIndex_start = start - 1;
+    currIndex_end = end - 1;
+    
+     drawCircles(currIndex_start, currIndex_end);
+}
+
+function drawCircles(start_index, end_index) {    
+    if (start_index >= 0 && start_index < maxIndex && end_index >= 0 && end_index < maxIndex && end_index >= start_index) {
+	currLayer.clearLayers();
+	for (var i = start_index; i <= end_index; i++) {
+	    for (var j = 0; j < circles[i].length; j++) {
+		if (circles[i][j].mag >= curr_mag && circles[i][j].depth >= curr_depth) {
+		    var circle = L.circle(circles[i][j].coordinates, circles[i][j].mag * r_factor, {
+			color: 'none',
+			fillColor: 'red',
+			fillOpacity: 0.5
+		    });
+		    circle.bindPopup("Time: " +  circles[i][j].time + "<br> Coordinates: [" + circles[i][j].coordinates[0] + ", " + circles[i][j].coordinates[1] + "]" + "<br> Magnitude: " + circles[i][j].mag + "<br> Depth: " + circles[i][j].depth);
+		    currLayer.addLayer(circle);
+		}
+	    }
 	}
+	currLayer.addTo(map);
     }
-    currLayer.addTo(map);
 }
 
 function update_bar(value) {
     document.getElementById("slider_bar").value = value;
-    document.getElementById("number_hour").value = value;
+}
+
+function update_dayhour(value) {
+    curr_day = Math.floor(value / 24);
+    curr_hour = value % 24;
+    document.getElementById("number_day").value = curr_day;
+    document.getElementById("number_hour").value = curr_hour;
 }
 
 function drawCircles_auto() {
@@ -59,14 +104,16 @@ function drawCircles_auto() {
 	.transition().duration(function(d) { return Math.round(1000*d.mag);}).attr('r',1).remove();
 
     update_bar(currIndex+1);
+    update_dayhour(currIndex+1);
     currIndex = currIndex + 1;
+    animate_events.pop();
 }
 
 function animate() {
     stop_animate();
     currIndex = 0;
     for (var i = 0; i < maxIndex; i++) {
-	animate_events.push(setTimeout(function(){drawCircles_auto()}, 1000 * i));
+	animate_events.push(setTimeout(function(){drawCircles_auto()}, (Math.floor(1000 / fps)) * i));
     }
 }
 
@@ -77,42 +124,65 @@ function stop_animate() {
 }
 
 function slider(value) {
+    update_dayhour(value);
     if (value == 0) {
 	map.removeLayer(currLayer);
     } else {
-	currIndex = value - 1;
-	drawCircles(currIndex);
+	currIndex_start = value - 1;
+	currIndex_end = value - 1;
+	drawCircles(currIndex_start, currIndex_end);
     }
-    document.getElementById("number_hour").value = value;
+}
+
+function speed(value) {
+    if (value == "slow") {
+	fps = 1;
+    } else if (value == "medium") {
+	fps = 3;
+    } else {
+	fps = 5;
+    }
 }
 
 function mag(value) {
     if (value == 0) {
-	curr_mag = MAGMAX;
+	curr_mag = MAGMIN;
     } else {
 	curr_mag = value;
     }
 
-    drawCircles(currIndex);
+    drawCircles(currIndex_start, currIndex_end);
 }
 
 function depth(value) {
     if (value == 0) {
-	curr_depth = DEPTHMAX;
+	curr_depth = DEPTHMIN;
     } else {
 	curr_depth = value;
     }
 
-    drawCircles(currIndex);
+    drawCircles(currIndex_start, currIndex_end);
+}
+
+function day_hour() {
+    var time = parseInt(curr_day * 24) + parseInt(curr_hour);
+
+    if (time > 0 && time <= maxIndex) {
+	currIndex_start = time - 1;
+	currIndex_end = time - 1;
+	drawCircles(currIndex_start, currIndex_end);
+	update_bar(time);
+    } else {
+	map.removeLayer(currLayer);
+	update_bar(0);
+    }
+}    
+function day(value) {
+    curr_day = value;
+    day_hour();
 }
 
 function hour(value) {
-    if (value > 0 && value <= maxIndex) {
-	currIndex = value - 1;
-	drawCircles(currIndex);
-	document.getElementById("slider_bar").value = value;
-    } else {
-	map.removeLayer(currLayer);
-	document.getElementById("slider_bar").value = 0;
-    }
+    curr_hour = value;
+    day_hour();
 }

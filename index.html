@@ -10,7 +10,7 @@
   </head>
   <body>
     <select onchange="mag(this.value)">
-      <option value="0">Maximum Magnitue</option>
+      <option value="0">Minimum Magnitue</option>
       <option value="1">1</option>
       <option value="2">2</option>
       <option value="3">3</option>
@@ -22,27 +22,33 @@
       <option value="9">9</option>
       <option value="10">10</option>
     </select>
-    <select onchange="depth(this.value)">
-      <option value="0">Maximum Depth</option>
-      <option value="20">20</option>
-      <option value="40">40</option>
-      <option value="60">60</option>
-      <option value="80">80</option>
-      <option value="100">100</option>
-      <option value="120">120</option>
-      <option value="140">140</option>
-      <option value="160">160</option>
-      <option value="180">180</option>
-      <option value="200">200</option>
-    </select>
+    <span>Minimum Depth (0-700)</span>
+    <input type="number" id="max_depth" min="0" max="700" oninput="depth(this.value)" />
+    <br></br>
+    <span>Start Day</span>
+    <input type="number" id="start_day" min="0" max="365" oninput="start_day(this.value)" />
+    <span>Start Hour</span>
+    <input type="number" id="start_hour" min="0" max="23" oninput="start_hour(this.value)" />
+    <br></br>
+    <span>End Day</span>
+    <input type="number" id="end_day" min="0" max="365" oninput="end_day(this.value)" />
+    <span>End Hour</span>
+    <input type="number" id="end_hour" min="0" max="23" oninput="end_hour(this.value)" />
+    <div><button onclick="range_drawCircles();" id="but_draw">Submit</button></div>
     <div><button onclick="animate();" id="but_animate">Animation</button></div>
+    <select onchange="speed(this.value)">
+      <option value="fast">Animation Speed</option>
+      <option value="slow">Slow</option>
+      <option value="medium">Medium</option>
+      <option value="fast">Fast</option>
+    </select>
     <div><button onclick="stop_animate();" id="but_stop_animate">Stop Animation</button></div>
     <input type="range" id="slider_bar" step="1" min="0" max="8760" value="0" onmousemove="slider(this.value)" />
     <p></p>
-    <span>Day (0-0)</span>
-    <input type="number" id="number_day" min="0" max="0" />
-    <span>Hour (1-8)</span>
-    <input type="number" id="number_hour" min="1" max="8760" oninput="hour(this.value)" />
+    <span>Day (0-365)</span>
+    <input type="number" id="number_day" min="0" max="365" oninput="day(this.value)" />
+    <span>Hour (0-23)</span>
+    <input type="number" id="number_hour" min="0" max="23" oninput="hour(this.value)" />
     <div id="map"></div>
     <script type="text/javascript" src="newdata.js"></script>
     <script type="text/javascript" src="mapscript.js"></script>
