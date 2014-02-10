@@ -95,3 +95,52 @@ function hour(value) {
 	document.getElementById("slider_bar").value = 0;
     }
 }
+
+/*
+    map._initPathRoot()    
+
+    var svg = d3.select("#map").select("svg"),
+      g = svg.append("g");
+
+    d3.json("test.json", function(collection) {
+
+        collection.day1.forEach(function(d) {
+          d.LatLng = new L.LatLng(d.coordinates[0],d.coordinates[1])
+        })
+      
+        var feature = g.selectAll("circle")
+          .data(collection.day1)
+          .enter().append("circle")
+          .attr('fill','red')
+          .attr("r", function (d) { return d.mag*10})
+          .transition().delay(300).duration(1000).attr('r',1).remove();
+
+        function update() {
+          feature.attr("cx",function(d) { return map.latLngToLayerPoint(d.LatLng).x})
+          feature.attr("cy",function(d) { return map.latLngToLayerPoint(d.LatLng).y})
+          feature.attr("r",function(d) { return d.mag/2*Math.pow(2,map.getZoom())})
+        }
+        
+        map.on("viewreset", update);
+        update();
+    })
+*/
+
+/* test.json
+
+{
+  "day1":[
+    {
+      "coordinates": [51.975, -169.566],
+      "depth": 87.7,
+      "mag": 4.9
+    },
+    {
+      "coordinates": [40.358, 141.54],
+      "depth": 100.5,
+      "mag": 4.6
+    } 
+  ]
+}
+
+*/
