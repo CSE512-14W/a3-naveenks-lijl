@@ -15,13 +15,17 @@ var curr_depth = DEPTHMAX;
 
 tile.addTo(map);
 
+map._initPathRoot()
+
+var svg = d3.select("#map").select("svg");
+
 function drawCircles(index) {
     currLayer.clearLayers();
     for (var i = 0; i < circles[index].length; i++) {
 	if (circles[index][i].mag <= curr_mag && circles[index][i].depth <= curr_depth) {
 	    var circle = L.circle(circles[index][i].coordinated, circles[index][i].mag * r_factor, {
-		color: 'red',
-		fillColor: '#f05',
+		color: 'none',
+		fillColor: 'red',
 		fillOpacity: 0.5
 	    });
 	    currLayer.addLayer(circle);
@@ -36,7 +40,23 @@ function update_bar(value) {
 }
 
 function drawCircles_auto() {
-    drawCircles(currIndex);
+    currLayer.clearLayers();
+    circles[currIndex].forEach(function(d) {
+	d.LatLng = new L.LatLng(d.coordinated[0],d.coordinated[1])
+    })
+
+    var g = svg.append("g");
+
+    g.selectAll("circle")
+	.data(circles[currIndex])
+	.enter().append("circle")
+	.attr('fill','red')
+        .attr('opacity',0.5)
+	.attr("cx",function(d) { return map.latLngToLayerPoint(d.LatLng).x})
+	.attr("cy",function(d) { return map.latLngToLayerPoint(d.LatLng).y})
+	.attr("r",function(d) { return d.mag/1*Math.pow(2,map.getZoom())})
+	.transition().duration(2000).attr('r',1).remove();
+
     update_bar(currIndex+1);
     currIndex = currIndex + 1;
 }
@@ -53,6 +73,7 @@ function stop_animate() {
     while (animate_events.length > 0) {
 	clearTimeout(animate_events.pop());
     }
+    drawCircles(currIndex-1);
 }
 
 function slider(value) {
@@ -95,60 +116,3 @@ function hour(value) {
 	document.getElementById("slider_bar").value = 0;
     }
 }
-
-/*
-  map._initPathRoot()
-
-  var svg = d3.select("#map").select("svg"), g = svg.append("g");
-  
-  var day1 = [
-    {
-      "coordinates": [51.975, -169.566],
-      "depth": 87.7,
-      "mag": 4.9
-    },
-    {
-      "coordinates": [40.358, 141.54],
-      "depth": 100.5,
-      "mag": 4.6
-    } 
-  ]
- 
-  day1.forEach(function(d) {
-    d.LatLng = new L.LatLng(d.coordinates[0],d.coordinates[1])
-  })
-
-  var feature = g.selectAll("circle")
-    .data(day1)
-    .enter().append("circle")
-    .attr('fill','red')
-    .attr("r", function (d) { return d.mag*10})
-    .transition().delay(300).duration(1000).attr('r',1).remove();
-
-  function update() {
-    feature.attr("cx",function(d) { return map.latLngToLayerPoint(d.LatLng).x})
-    feature.attr("cy",function(d) { return map.latLngToLayerPoint(d.LatLng).y})
-    feature.attr("r",function(d) { return d.mag/14*Math.pow(2,map.getZoom())})
-  }
-  map.on("viewreset", update);
-  update();
-*/
-
-/* test.json
-
-{
-  "day1":[
-    {
-      "coordinates": [51.975, -169.566],
-      "depth": 87.7,
-      "mag": 4.9
-    },
-    {
-      "coordinates": [40.358, 141.54],
-      "depth": 100.5,
-      "mag": 4.6
-    } 
-  ]
-}
-
-*/
