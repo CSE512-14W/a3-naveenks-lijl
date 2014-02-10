@@ -1,4 +1,13 @@
+body {
+  margin:auto;
+}
+
 #map {
-    height: 700px;
-    width: 1100px;
+  margin:10px auto;
+  height: 700px;
+  width: 1100px;
+}
+
+#slider_bar {
+  width: 1050px;
 }

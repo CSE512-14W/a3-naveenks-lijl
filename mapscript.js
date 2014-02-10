@@ -97,12 +97,15 @@ function drawCircles_auto() {
 	.data(circles[currIndex])
 	.enter().append("circle")
 	.attr('fill','red')
-        .attr('opacity',0.5)
+    .attr('opacity',1)
 	.attr("cx",function(d) { return map.latLngToLayerPoint(d.LatLng).x})
 	.attr("cy",function(d) { return map.latLngToLayerPoint(d.LatLng).y})
-	.attr("r",function(d) { return d.mag/1*Math.pow(2,map.getZoom())})
-	.transition().duration(function(d) { return Math.round(1000*d.mag);}).attr('r',1).remove();
-
+	.attr("r",1)
+	.transition().duration(function(d) { return Math.round(1000*d.mag);})
+    .attr('r',function(d) { return d.mag/1*Math.pow(2,map.getZoom())})
+    .attr('opacity', 0.1)
+    .remove();
+	
     update_bar(currIndex+1);
     update_dayhour(currIndex+1);
     currIndex = currIndex + 1;

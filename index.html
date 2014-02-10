@@ -2,13 +2,25 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>D3 Test</title>
-    <script type="text/javascript" src="d3/d3.v3.js"></script>
+    <title>Earthquakes in 2013</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="leafletjs/leaflet.css" />
     <script src="leafletjs/leaflet.js"></script>
+    <script type="text/javascript" src="d3/d3.v3.js"></script>
   </head>
-  <body>
+
+  <body><center>
+    <h1>Visualizing Earthquakes of 2013</h1>
+
+    <table><tr>
+    <td><center>
+      <div id="map"></div>
+      <input type="range" name="slider" id="slider_bar" step="1" min="0" max="8760" value="0" onmousemove="slider(this.value)" onchange="slider(this.value)" list="weeks"/>
+      <output for="slider" onforminput="value = slider.valueAsNumber;"> </output>
+    </center></td>
+    
+    <td>
+    <p>
     <select onchange="mag(this.value)">
       <option value="0">Minimum Magnitue</option>
       <option value="1">1</option>
@@ -22,35 +34,106 @@
       <option value="9">9</option>
       <option value="10">10</option>
     </select>
+    </p>
+    
+    <p>
     <span>Minimum Depth (0-700)</span>
     <input type="number" id="max_depth" min="0" max="700" oninput="depth(this.value)" />
-    <br></br>
+    </p>
+    
+    <p>
     <span>Start Day</span>
     <input type="number" id="start_day" min="0" max="365" oninput="start_day(this.value)" />
     <span>Start Hour</span>
     <input type="number" id="start_hour" min="0" max="23" oninput="start_hour(this.value)" />
-    <br></br>
+    </p>
+
+    <p>    
     <span>End Day</span>
     <input type="number" id="end_day" min="0" max="365" oninput="end_day(this.value)" />
     <span>End Hour</span>
     <input type="number" id="end_hour" min="0" max="23" oninput="end_hour(this.value)" />
-    <div><button onclick="range_drawCircles();" id="but_draw">Submit</button></div>
-    <div><button onclick="animate();" id="but_animate">Animation</button></div>
+    <button onclick="range_drawCircles();" id="but_draw">Submit</button>
+    </p>
+    
+    <p>
+    <button onclick="animate();" id="but_animate">Animation</button>
     <select onchange="speed(this.value)">
       <option value="fast">Animation Speed</option>
       <option value="slow">Slow</option>
       <option value="medium">Medium</option>
       <option value="fast">Fast</option>
     </select>
-    <div><button onclick="stop_animate();" id="but_stop_animate">Stop Animation</button></div>
-    <input type="range" id="slider_bar" step="1" min="0" max="8760" value="0" onmousemove="slider(this.value)" />
-    <p></p>
+    <button onclick="stop_animate();" id="but_stop_animate">Stop Animation</button>
+    </p>
+
+    <p>
     <span>Day (0-365)</span>
     <input type="number" id="number_day" min="0" max="365" oninput="day(this.value)" />
     <span>Hour (0-23)</span>
     <input type="number" id="number_hour" min="0" max="23" oninput="hour(this.value)" />
-    <div id="map"></div>
+    </p>
+    </td>
+    </tr></table>
+
+    <datalist id="weeks">
+      <option>0</option>
+      <option>168</option>
+      <option>336</option>
+      <option>504</option>
+      <option>672</option>
+      <option>840</option>
+      <option>1008</option>
+      <option>1176</option>
+      <option>1344</option>
+      <option>1512</option>
+      <option>1680</option>
+      <option>1848</option>
+      <option>2016</option>
+      <option>2184</option>
+      <option>2352</option>
+      <option>2520</option>
+      <option>2688</option>
+      <option>2856</option>
+      <option>3024</option>
+      <option>3192</option>
+      <option>3360</option>
+      <option>3528</option>
+      <option>3696</option>
+      <option>3864</option>
+      <option>4032</option>
+      <option>4200</option>
+      <option>4368</option>
+      <option>4536</option>
+      <option>4704</option>
+      <option>4872</option>
+      <option>5040</option>
+      <option>5208</option>
+      <option>5376</option>
+      <option>5544</option>
+      <option>5712</option>
+      <option>5880</option>
+      <option>6048</option>
+      <option>6216</option>
+      <option>6384</option>
+      <option>6552</option>
+      <option>6720</option>
+      <option>6888</option>
+      <option>7056</option>
+      <option>7224</option>
+      <option>7392</option>
+      <option>7560</option>
+      <option>7728</option>
+      <option>7896</option>
+      <option>8064</option>
+      <option>8232</option>
+      <option>8400</option>
+      <option>8568</option>
+      <option>8736</option>
+    </datalist>
+
     <script type="text/javascript" src="newdata.js"></script>
     <script type="text/javascript" src="mapscript.js"></script>
-  </body>
+
+  </center></body>
 </html>
