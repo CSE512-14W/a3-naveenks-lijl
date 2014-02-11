@@ -62,3 +62,28 @@ We had the following image in mind for our visualization.
 
 We used D3 for drawing circles and animating them and leaflet.js
 (http://leafletjs.com/) for the map API.
+
+Breakdown of work.
+
+Naveen (~24 hrs):
+* Acquiring dataset and cleaning and transformation.
+* Leafletjs API usage.
+
+Jialin (~30 hrs):
+* D3 and javascript animation and coding.
+* Understanding Maps API and integrating with D3.
+
+## Description of Visualization
+
+Our final visualization consists of a zoomable map which plots all the
+earthquake events in a specified period of time. We support several
+filters to allow observing specific classes of earthquakes. We could not
+finish the distribution and region grouping due to lack of time.
+
+Filters
+* Show earthquakes with magnitude greater than a certain value.
+* Show earthwuakes with depth greater than a certain value.
+* Show all earthquakes in a certain period (start day (0-365), hour(0-23) and end day).
+* Play the animation starting from day 0 with varying speeds.
+* Manually drag the slider at the bottom to see earthquakes at a particular hour.
+* For more preciseness, manually enter the day and hour in the given textbox to see all the earthquakes.
