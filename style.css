@@ -11,3 +11,11 @@ body {
 #slider_bar {
   width: 1050px;
 }
+
+#start_day,#end_day {
+    width: 50px;
+}
+
+#start_hour,#end_hour {
+    width: 30px;
+}

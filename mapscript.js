@@ -45,6 +45,11 @@ function end_hour(value) {
 }
 
 function range_drawCircles() {
+    day_start = document.getElementById("start_day").value;
+    day_end = document.getElementById("end_day").value;
+    hour_start = document.getElementById("start_hour").value;
+    hour_end = document.getElementById("end_hour").value;
+    
     var start = parseInt(day_start * 24) + parseInt(hour_start);
     var end = parseInt(day_end * 24) + parseInt(hour_end);
 
