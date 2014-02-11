@@ -56,7 +56,7 @@ follows.
 
 We had the following image in mind for our visualization.
 
-![storyboard](https://raw.github.com/CSE512-14W/a3-naveenks-lijl/master/storyboard.png) 
+![storyboard](https://raw.github.com/CSE512-14W/a3-naveenks-lijl/master/Storyboard.png) 
 
 ## Development Process
 
